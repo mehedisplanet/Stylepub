@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Shopping Cart -->
+{% if data %}
+    <h2 class="text-center" style="">My Cart List</h2>
+	<div class="shopping-cart section">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<!-- Shopping Summery -->
+					<table class="table shopping-summery">
+						<thead>
+							<tr class="main-hading">
+								<th>PRODUCT</th>
+								<th>NAME</th>
+								<th class="text-center">UNIT PRICE</th>
+								<th class="text-center">QUANTITY</th>
+								<th class="text-center">TOTAL</th> 
+								<th class="text-center"><i class="ti-trash remove-icon"></i></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for i in data %}
+							<tr>
+								<td class="image" data-title="No"><img src="{{i.product.image.url}}" alt="#"></td>
+								<td class="product-des" data-title="Description">
+									<p class="product-name"><a href="{% url 'details' i.product.id %}">{{i.product.title}}</a></p>
+									<p class="product-des">{{i.product.color}}</p>
+									<p class="product-des">{{i.product.size}}</p>
+								</td>
+								<td class="price" data-title="Price"><span>$ {{i.product.price}}</span></td>
+								<td class="qty" data-title="Qty"><!-- Input Order -->
+									<div class="input-group">
+										<div class="button minus">
+											<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+												<i class="ti-minus"></i>
+											</button>
+										</div>
+										<input type="text" name="quant[1]" class="input-number"  data-min="1" data-max="100" value="1">
+										<div class="button plus">
+											<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+												<i class="ti-plus"></i>
+											</button>
+										</div>
+									</div>
+									<!--/ End Input Order -->
+								</td>
+								<td class="total-amount" data-title="Total"><span>${{i.product.price}}</span></td>
+								<td class="action" data-title="Remove"><a href="{% url 'delete_cart_product' i.id %}"><i class="ti-trash remove-icon"></i></a></td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<!--/ End Shopping Summery -->
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<!-- Total Amount -->
+					<!--/ End Total Amount -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/ End Shopping Cart -->
+{% else %}
+<br>
+<br>
+<br>
+<br>
+<h1 class="text-center" style="width:60%;margin:auto;height:40%">No Data Available</h1>
+{% endif %}
+{% endblock content %}

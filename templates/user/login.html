@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+{% load crispy_forms_tags %}
+{% block content %}
+
+<section class="login">
+    <div class="login_box">
+      <div class="left">
+        <div class="top_link"><a href="/"><img src="" alt="">Return home</a></div>
+        <div class="contact">
+          <form class="account-form" action="" method="post">
+            {% csrf_token %}
+            <h3 class="mb-4">Sign In</h3>
+            {% if form.errors %}
+            <div class="alert alert-primary" role="alert">
+              Error: Username or Password not correct!
+            </div>
+            {% endif %}
+            <label class="form-label">{{ form.username.label}}</label>
+            {{ form.username}}
+            <label class="form-label">{{ form.password.label}}</label>
+            {{ form.password}}
+            <div class="d-grid gap-2">
+              <input type="hidden" name="next" value="{{ next }}">
+              <button class="btn btn-primary py-2 mb-4 mt-5 fw-bold" type="submit" value="Log-in">Sign in
+              </button>
+            </div>
+            <div class="flex-column justify-content-center mx-auto pb-3">
+              <div class="text-center btn-primary py-2 mb-4 mt-5 fw-bold"><a href="{% url 'register' %}">Create an account</a></div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="right">
+        <div class="right-text">
+          <h1>StylePub</h1>
+          <h3>A fresh approach to shopping.</h3>
+        </div>
+        <div class="right-inductor"><img src="" alt=""></div>
+      </div>
+    </div>
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock content %}
