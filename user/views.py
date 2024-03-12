@@ -1,3 +1,7 @@
+from .models import PurchaseHistory
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from .forms import ContactUsForm
@@ -170,6 +174,34 @@ class PurchaseView(LoginRequiredMixin,View):
 
 
 
+
+@login_required
+def Checkout(request):
+    purchases = Purchase.objects.filter(user=request.user)
+    purchased_items_details = []
+    for purchase in purchases:
+        product_details = f"{purchase.product.title} - ${purchase.product.price}"
+        purchased_items_details.append(product_details)
+        PurchaseHistory.objects.create(user=request.user, product=purchase.product)
+        request.user.save()
+    
+    if purchased_items_details:
+        # Send email
+        subject = 'Purchase Confirmation'
+        message = f'Thank you for your purchase! You have bought: {", ".join(purchased_items_details)}'
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [request.user.email]
+        send_mail(subject, message, from_email, to_email, fail_silently=False)
+
+        # Delete purchases
+        purchases.delete()
+        messages.success(request, "Product checkout successful. Purchase confirmation email sent.")
+    else:
+        messages.info(request, "Your cart is empty. Please purchase first.")
+    return redirect('/')
+
+
+
 class WishlistView(LoginRequiredMixin,View):
     login_url=reverse_lazy('login')
 
@@ -273,3 +305,33 @@ def deleteWishProduct(request,id):
         except Wishlist.DoesNotExist:
             messages.error(request, "Wishlist delete product not found.")
         return redirect('wishlist')
+    
+
+
+
+class PurchaseHistoryView(LoginRequiredMixin, ListView):
+    template_name = 'user/purchase_history.html'
+    login_url = reverse_lazy('login')
+
+    def get_context_data(self,**kwargs):
+        context = {}
+        if self.request.user.is_authenticated:
+            user = self.request.user
+            cart = Purchase.objects.filter(user=user)
+            history = PurchaseHistory.objects.filter(user=user)
+            context['cart'] = cart
+            context['history'] = history
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request, "You must be logged in to access your history.")
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        context=self.get_context_data()
+        history = PurchaseHistory.objects.filter(user=request.user)
+        return render(request, self.template_name, {
+            'data': history,**context
+        })

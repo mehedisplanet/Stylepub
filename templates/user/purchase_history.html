@@ -3,7 +3,7 @@
 
 <!-- Shopping Cart -->
 {% if data %}
-    <h2 class="text-center" style="">My Cart List</h2>
+    <h2 class="text-center" style="">Purchase History List</h2>
 	<div class="shopping-cart section">
 		<div class="container">
 			<div class="row">
@@ -17,7 +17,6 @@
 								<th class="text-center">UNIT PRICE</th>
 								<th class="text-center">QUANTITY</th>
 								<th class="text-center">TOTAL</th> 
-								<th class="text-center"><i class="ti-trash remove-icon"></i></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -47,12 +46,10 @@
 									<!--/ End Input Order -->
 								</td>
 								<td class="total-amount" data-title="Total"><span>${{i.product.price}}</span></td>
-								<td class="action" data-title="Remove"><a href="{% url 'delete_cart_product' i.id %}"><i class="ti-trash remove-icon"></i></a></td>
 							</tr>
 							{% endfor %}
 						</tbody>
 					</table>
-					<a class="btn btn-check text-end-0" href="{% url 'checkout' %}">CheckOut</a>
 					<!--/ End Shopping Summery -->
 				</div>
 			</div>

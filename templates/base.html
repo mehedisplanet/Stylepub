@@ -138,7 +138,7 @@
 					<div class="col-lg-2 col-md-2 col-12">
 						<!-- Logo -->
 						<div class="logo">
-							<a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a>
+							<a href="/"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a>
 						</div>
 						<!--/ End Logo -->
 						<!-- Search Form -->
@@ -170,7 +170,7 @@
 						<div class="right-bar">
 							<!-- Search Form -->
 							<div class="sinlge-bar">
-								<a href="{% url 'wishlist' %}" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i><span class="total-count">{{wishlist|length}}</span></a>
+								<a href="{% url 'wishlist' %}" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
 							</div>
 							<div class="sinlge-bar">
 								<a href="{% url 'profile' %}" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
@@ -198,7 +198,7 @@
 											{% comment %} <span>Total</span> {% endcomment %}
 											{% comment %} <span class="total-amount">$134.00</span> {% endcomment %}
 										</div>
-										<a href="{% url 'cart' %}" class="btn animate">Checkout</a>
+										<a href="{% url 'checkout' %}" class="btn animate">Checkout</a>
 									</div>
 								</div>
 								<!--/ End Shopping Item -->
