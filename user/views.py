@@ -81,6 +81,10 @@ class UserLogin(LoginView):
             messages.info(request, "You are already logged in.")
             return HttpResponseRedirect(reverse_lazy('home'))
         return super().dispatch(request, *args, **kwargs)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "Invalid username or password")
+        return super().form_invalid(form)
 
     def get_success_url(self):
         messages.success(self.request, "Login successfully")
